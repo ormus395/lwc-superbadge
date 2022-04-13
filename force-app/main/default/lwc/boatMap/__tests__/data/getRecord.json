@@ -1,0 +1,20 @@
+{
+  "apiName": "Boat__c",
+  "childRelationships": {},
+  "fields": {
+    "Geolocation__Latitude__s": {
+      "displayValue": null,
+      "value": 34.201658
+    },
+    "Geolocation__Longitude__s": {
+      "displayValue": null,
+      "value": -83.987133
+    }
+  },
+  "id": "a028b000027JEk8AAG",
+  "lastModifiedById": "0058b00000F9jAGAAZ",
+  "lastModifiedDate": "2022-04-08T22:23:24.000Z",
+  "recordTypeId": "012000000000000AAA",
+  "recordTypeInfo": null,
+  "systemModstamp": "2022-04-08T22:23:24.000Z"
+}

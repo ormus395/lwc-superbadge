@@ -43,8 +43,7 @@ export default class BoatMap extends LightningElement {
   @wire(getRecord, { recordId: "$boatId", fields: BOAT_FIELDS })
   wiredRecord({ error, data }) {
     // Error handling
-    console.log(this.boatId);
-    console.log(data);
+    console.log("called");
     if (data) {
       this.error = undefined;
       const longitude = data.fields.Geolocation__Longitude__s.value;
@@ -68,7 +67,10 @@ export default class BoatMap extends LightningElement {
     this.subscription = subscribe(
       this.messageContext,
       BOATMC,
-      (message) => (this.recordId = message.recordId),
+      (message) => {
+        console.log("setting boat id", message.recordId);
+        this.recordId = message.recordId;
+      },
       { scope: APPLICATION_SCOPE }
     );
   }

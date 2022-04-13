@@ -1,4 +1,4 @@
-import { LightningElement, api, wire } from "lwc";
+import { LightningElement, api, wire, track } from "lwc";
 import { publish, MessageContext } from "lightning/messageService";
 import BOATMC from "@salesforce/messageChannel/BoatMessageChannel__c";
 
@@ -14,7 +14,7 @@ export default class BoatSearchResults extends LightningElement {
   selectedBoatId;
   columns = [];
   boatTypeId = "";
-  boats;
+  @track boats;
   isLoading = false;
 
   // wired message context
@@ -27,6 +27,10 @@ export default class BoatSearchResults extends LightningElement {
     if (result.data) {
       this.boats = result.data;
     }
+  }
+
+  get renderBoatTiles() {
+    return this.boats ? this.boats.length > 0 : false;
   }
 
   // public function that updates the existing boatTypeId property

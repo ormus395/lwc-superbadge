@@ -7,7 +7,7 @@ const ICON_STANDARD_USER = "standard:user";
 const ERROR_TITLE = "Error loading Boats Near Me";
 const ERROR_VARIANT = "error";
 export default class BoatsNearMe extends LightningElement {
-  @api boatTypeId;
+  boatTypeId;
   mapMarkers = [];
   isLoading = true;
   isRendered = false;
@@ -23,16 +23,20 @@ export default class BoatsNearMe extends LightningElement {
     boatTypeId: "$boatTypeId"
   })
   wiredBoatsJSON({ error, data }) {
+    console.log(data);
     if (data) {
       this.isLoading = false;
       this.createMapMarkers(data);
     } else if (error) {
+      this.isLoading = false;
       const event = new ShowToastEvent({
         title: ERROR_TITLE,
         variant: ERROR_VARIANT
       });
 
       this.dispatchEvent(event);
+    } else {
+      this.isLoading = false;
     }
   }
 
@@ -61,25 +65,27 @@ export default class BoatsNearMe extends LightningElement {
   createMapMarkers(boatData) {
     // const newMarkers = boatData.map(boat => {...});
     // newMarkers.unshift({...});
-    const newMarkers = boatData.map((boat) => {
-      return {
-        title: boat.Name,
+    if (boatData) {
+      const newMarkers = boatData.map((boat) => {
+        return {
+          title: boat.Name,
+          location: {
+            Latitude: boat.Geolocation__Latitude__s,
+            Longitude: boat.Geolocation__Longitude__s
+          }
+        };
+      });
+      newMarkers.unshift({
+        title: LABEL_YOU_ARE_HERE,
+        icon: ICON_STANDARD_USER,
         location: {
-          Latitude: boat.Geolocation__Latitude__s,
-          Longitude: boat.Geolocation__Longitude__s
+          Latitude: this.latitude,
+          Longitude: this.longitude
         }
-      };
-    });
-    newMarkers.unshift({
-      title: LABEL_YOU_ARE_HERE,
-      icon: ICON_STANDARD_USER,
-      location: {
-        Latitude: this.latitude,
-        Longitude: this.longitude
-      }
-    });
+      });
 
-    this.mapMarkers = newMarkers;
-    this.isLoading = false;
+      this.mapMarkers = newMarkers;
+      this.isLoading = false;
+    }
   }
 }
