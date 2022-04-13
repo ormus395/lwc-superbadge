@@ -1,4 +1,4 @@
-import { LightningElement, wire, api } from "lwc";
+import { LightningElement, wire, api, track } from "lwc";
 import { ShowToastEvent } from "lightning/platformShowToastEvent";
 // imports
 import getBoatsByLocation from "@salesforce/apex/BoatDataService.getBoatsByLocation";
@@ -7,12 +7,12 @@ const ICON_STANDARD_USER = "standard:user";
 const ERROR_TITLE = "Error loading Boats Near Me";
 const ERROR_VARIANT = "error";
 export default class BoatsNearMe extends LightningElement {
-  boatTypeId;
+  @api boatTypeId = "";
   mapMarkers = [];
   isLoading = true;
   isRendered = false;
-  @api latitude;
-  @api longitude;
+  latitude;
+  longitude;
 
   // Add the wired method from the Apex Class
   // Name it getBoatsByLocation, and use latitude, longitude and boatTypeId
@@ -23,10 +23,8 @@ export default class BoatsNearMe extends LightningElement {
     boatTypeId: "$boatTypeId"
   })
   wiredBoatsJSON({ error, data }) {
-    console.log(data);
     if (data) {
-      this.isLoading = false;
-      this.createMapMarkers(data);
+      this.createMapMarkers(JSON.parse(data));
     } else if (error) {
       this.isLoading = false;
       const event = new ShowToastEvent({
@@ -35,8 +33,6 @@ export default class BoatsNearMe extends LightningElement {
       });
 
       this.dispatchEvent(event);
-    } else {
-      this.isLoading = false;
     }
   }
 
@@ -65,6 +61,7 @@ export default class BoatsNearMe extends LightningElement {
   createMapMarkers(boatData) {
     // const newMarkers = boatData.map(boat => {...});
     // newMarkers.unshift({...});
+    console.log(typeof boatData);
     if (boatData) {
       const newMarkers = boatData.map((boat) => {
         return {
