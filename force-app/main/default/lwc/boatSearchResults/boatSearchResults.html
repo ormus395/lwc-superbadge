@@ -7,7 +7,7 @@
         <lightning-layout horizontal-align="center" multiple-rows>
           <!-- template looping through each boat -->
           <!-- <template> -->
-          <template if:true={renderBoatTiles}>
+          <template if:true={renderBoats}>
             <template for:each={boats} for:item="boat">
               <!-- lightning-layout-item for each boat -->
               <lightning-layout-item
@@ -34,6 +34,14 @@
     </lightning-tab>
     <lightning-tab label="Boat Editor">
       <!-- Scrollable div and lightning datatable go here -->
+      <template if:true={renderBoats}>
+        <lightning-datatable
+          key-field="Id"
+          data={boats}
+          columns={columns}
+          onsave={handleSave}
+        ></lightning-datatable>
+      </template>
     </lightning-tab>
     <lightning-tab label="Boats Near Me">
       <!-- boatsNearMe component goes here -->

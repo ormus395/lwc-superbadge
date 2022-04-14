@@ -23,8 +23,12 @@ export default class BoatsNearMe extends LightningElement {
     boatTypeId: "$boatTypeId"
   })
   wiredBoatsJSON({ error, data }) {
+    console.log(data);
+    if (typeof data === "string") {
+      data = JSON.parse(data);
+    }
     if (data) {
-      this.createMapMarkers(JSON.parse(data));
+      this.createMapMarkers(data);
     } else if (error) {
       this.isLoading = false;
       const event = new ShowToastEvent({
@@ -33,6 +37,8 @@ export default class BoatsNearMe extends LightningElement {
       });
 
       this.dispatchEvent(event);
+    } else {
+      this.createMapMarkers([]);
     }
   }
 
@@ -50,10 +56,28 @@ export default class BoatsNearMe extends LightningElement {
   // position => {latitude and longitude}
   getLocationFromBrowser() {
     if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition((position) => {
-        this.latitude = position.coords.latitude;
-        this.longitude = position.coords.longitude;
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          this.latitude = position.coords.latitude;
+          this.longitude = position.coords.longitude;
+        },
+        () => {
+          console.log("geo error");
+          this.isLoading = false;
+          const event = new ShowToastEvent({
+            title: ERROR_TITLE,
+            variant: ERROR_VARIANT
+          });
+          this.dispatchEvent(event);
+        }
+      );
+    } else {
+      this.isLoading = false;
+      const event = new ShowToastEvent({
+        title: ERROR_TITLE,
+        variant: ERROR_VARIANT
       });
+      this.dispatchEvent(event);
     }
   }
 

@@ -1,0 +1,22 @@
+[
+  {
+    "attributes": {
+      "type": "Boat__c",
+      "url": "/services/data/v54.0/sobjects/Boat__c/a028b000027JEkEAAW"
+    },
+    "Name": "Friend of the friends",
+    "Geolocation__Latitude__s": 36.083559,
+    "Geolocation__Longitude__s": -114.76663,
+    "Id": "a028b000027JEkEAAW"
+  },
+  {
+    "attributes": {
+      "type": "Boat__c",
+      "url": "/services/data/v54.0/sobjects/Boat__c/a028b000027JEkBAAW"
+    },
+    "Name": "The Old Man and the Sea",
+    "Geolocation__Latitude__s": 41.08,
+    "Geolocation__Longitude__s": -118.51,
+    "Id": "a028b000027JEkBAAW"
+  }
+]
