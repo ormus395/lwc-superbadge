@@ -22,16 +22,16 @@
     <lightning-layout-item size="12" class="slds-p-top_small slds-is-relative">
       <!-- Spinner goes here -->
       <template if:true={isLoading}>
-        <lightning-spinner alternative-text="Loading"></lightning-spinner>
+        <lightning-spinner
+          alternative-text="Loading"
+          variant="brand"
+        ></lightning-spinner>
       </template>
       <!-- boatSearchResults goes here -->
-      <template if:false={isLoading}>
-        <h2>Search Results</h2>
-        <c-boat-search-results
-          onloading={handleLoading}
-          ondoneloading={handleDoneLoading}
-        ></c-boat-search-results>
-      </template>
+      <c-boat-search-results
+        onloading={handleLoading}
+        ondoneloading={handleDoneLoading}
+      ></c-boat-search-results>
 
       <!-- onloading={handleLoading} ondoneloading={handleDoneLoading} -->
     </lightning-layout-item>

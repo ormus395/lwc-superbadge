@@ -2,6 +2,7 @@ import { createElement } from "lwc";
 import getBoats from "@salesforce/apex/BoatDataService.getBoats";
 import updateBoatList from "@salesforce/apex/BoatDataService.updateBoatList";
 import getBoatsByLocation from "@salesforce/apex/BoatDataService.getBoatsByLocation";
+import refreshApex from "@salesforce/apex";
 import { ShowToastEventName } from "lightning/platformShowToastEvent";
 import BoatSearchResults from "../boatSearchResults";
 // import BoatTile from "../boatTile";
@@ -150,6 +151,27 @@ describe("c-boat-search-results", () => {
     });
   });
 
+  it("has clickable boat tiles that dispatch a boat select event", () => {
+    const comp = createElement("c-boat-search-results", {
+      is: BoatSearchResults
+    });
+    document.body.appendChild(comp);
+
+    getBoats.emit(mockGetBoats);
+
+    return Promise.resolve().then(() => {
+      const mockhandler = jest.fn();
+      const boatTile = comp.shadowRoot.querySelector("c-boat-tile");
+      const clickable = boatTile.shadowRoot.querySelector(".tile-wrapper");
+      clickable.addEventListener("click", mockhandler);
+
+      return Promise.resolve().then(() => {
+        clickable.dispatchEvent(new CustomEvent("click"));
+        expect(mockhandler).toHaveBeenCalled();
+      });
+    });
+  });
+
   it("updates the records on save", () => {
     const INPUT_PARAMS = [{ data: DRAFT_VALUES }];
     const element = createElement("c-boat-search-results", {
@@ -204,6 +226,7 @@ describe("c-boat-search-results", () => {
     await flushPromises();
 
     expect(toastHandler).toHaveBeenCalled();
+    expect(refreshApex).toHaveBeenCalled();
   });
 
   it("displays an error toast on update error", async () => {
@@ -234,5 +257,23 @@ describe("c-boat-search-results", () => {
     await flushPromises();
 
     expect(handler).toHaveBeenCalled();
+  });
+
+  describe("components @api properties and methods", () => {
+    afterEach(() => {
+      while (document.body.firstChild) {
+        document.body.removeChild(document.body.firstChild);
+      }
+      jest.clearAllMocks();
+    });
+
+    it("has a public searchBoats method", () => {
+      const element = createElement("c-boat-search-results", {
+        is: BoatSearchResults
+      });
+
+      expect(element.searchBoats).toBeDefined();
+      expect(element.refresh).toBeDefined();
+    });
   });
 });

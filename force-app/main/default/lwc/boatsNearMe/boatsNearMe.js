@@ -23,7 +23,6 @@ export default class BoatsNearMe extends LightningElement {
     boatTypeId: "$boatTypeId"
   })
   wiredBoatsJSON({ error, data }) {
-    console.log(data);
     if (typeof data === "string") {
       data = JSON.parse(data);
     }

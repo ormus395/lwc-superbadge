@@ -1,6 +1,7 @@
 import { LightningElement, api, wire, track } from "lwc";
 import { publish, MessageContext } from "lightning/messageService";
 import { ShowToastEvent } from "lightning/platformShowToastEvent";
+import { refreshApex } from "@salesforce/apex";
 import BOATMC from "@salesforce/messageChannel/BoatMessageChannel__c";
 import getBoats from "@salesforce/apex/BoatDataService.getBoats";
 import updateBoatList from "@salesforce/apex/BoatDataService.updateBoatList";
@@ -19,11 +20,11 @@ export default class BoatSearchResults extends LightningElement {
     { label: "Description", fieldName: "Description__c", editable: true }
   ];
   boatTypeId = "";
-  @track boats = [];
+  @track boats;
   isLoading = false;
 
   get renderBoats() {
-    return this.boats.length > 0;
+    return this.boats?.data.length > 0;
   }
 
   // wired message context
@@ -32,8 +33,11 @@ export default class BoatSearchResults extends LightningElement {
   // wired getBoats method
   @wire(getBoats, { boatTypeId: "$boatTypeId" })
   wiredBoats(result) {
+    console.log(result);
     if (result.data) {
-      this.boats = result.data;
+      this.boats = result;
+      this.isLoading = false;
+      this.notifyLoading(false);
     }
   }
 
@@ -41,13 +45,20 @@ export default class BoatSearchResults extends LightningElement {
   // uses notifyLoading
   @api
   searchBoats(boatTypeId) {
-    console.log(boatTypeId);
     this.boatTypeId = boatTypeId;
+    this.isLoading = true;
+    this.notifyLoading(true);
   }
 
   // this public function must refresh the boats asynchronously
   // uses notifyLoading
-  refresh() {}
+  @api async refresh() {
+    this.isLoading = true;
+    this.notifyLoading(true);
+    await refreshApex(this.boats);
+    this.isLoading = false;
+    this.notifyLoading(false);
+  }
 
   // this function must update selectedBoatId and call sendMessageService
   updateSelectedTile(event) {
@@ -89,8 +100,16 @@ export default class BoatSearchResults extends LightningElement {
           })
         );
       })
-      .finally(() => {});
+      .finally(() => {
+        this.refresh();
+      });
   }
   // Check the current value of isLoading before dispatching the doneloading or loading custom event
-  notifyLoading(isLoading) {}
+  notifyLoading(isLoading) {
+    if (isLoading) {
+      this.dispatchEvent(new CustomEvent("loading"));
+    } else {
+      this.dispatchEvent(new CustomEvent("doneloading"));
+    }
+  }
 }

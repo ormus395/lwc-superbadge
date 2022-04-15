@@ -70,6 +70,7 @@ describe("c-boat-tile", () => {
 
     return Promise.resolve().then(() => {
       comp.click();
+
       expect(handler).toHaveBeenCalled();
     });
   });
