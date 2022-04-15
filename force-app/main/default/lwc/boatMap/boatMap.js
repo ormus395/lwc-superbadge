@@ -26,6 +26,7 @@ export default class BoatMap extends LightningElement {
   get recordId() {
     return this.boatId;
   }
+
   set recordId(value) {
     this.setAttribute("boatId", value);
     this.boatId = value;
@@ -43,7 +44,6 @@ export default class BoatMap extends LightningElement {
   @wire(getRecord, { recordId: "$boatId", fields: BOAT_FIELDS })
   wiredRecord({ error, data }) {
     // Error handling
-    console.log("called");
     if (data) {
       this.error = undefined;
       const longitude = data.fields.Geolocation__Longitude__s.value;
@@ -68,7 +68,6 @@ export default class BoatMap extends LightningElement {
       this.messageContext,
       BOATMC,
       (message) => {
-        console.log("setting boat id", message.recordId);
         this.recordId = message.recordId;
       },
       { scope: APPLICATION_SCOPE }

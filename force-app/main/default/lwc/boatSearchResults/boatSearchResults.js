@@ -33,7 +33,6 @@ export default class BoatSearchResults extends LightningElement {
   // wired getBoats method
   @wire(getBoats, { boatTypeId: "$boatTypeId" })
   wiredBoats(result) {
-    console.log(result);
     if (result.data) {
       this.boats = result;
       this.isLoading = false;

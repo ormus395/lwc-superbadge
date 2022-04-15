@@ -1,6 +1,4 @@
 import { LightningElement, api, wire } from "lwc";
-import { publish, MessageContext, subscribe } from "lightning/messageService";
-import BOATMC from "@salesforce/messageChannel/BoatMessageChannel__c";
 
 const TILE_WRAPPER_SELECTED_CLASS = "tile-wrapper selected";
 const TILE_WRAPPER_UNSELECTED_CLASS = "tile-wrapper";
@@ -29,7 +27,6 @@ export default class BoatTile extends LightningElement {
 
   // Fires event with the Id of the boat that has been selected.
   selectBoat() {
-    console.log("clicked");
     const boatSelect = new CustomEvent("boatselect", {
       detail: { boatId: this.boat.Id }
     });

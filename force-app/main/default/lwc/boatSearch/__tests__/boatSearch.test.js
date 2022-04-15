@@ -44,7 +44,7 @@ describe("c-boat-search", () => {
   });
 
   it("fires a method when listening to search from child", async () => {
-    const handler = jest.fn((x) => console.log(x.detail.boatTypeId));
+    const handler = jest.fn();
     const element = createElement("c-boat-search", { is: BoatSearch });
     document.body.appendChild(element);
 

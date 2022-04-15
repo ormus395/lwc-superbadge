@@ -61,7 +61,6 @@ export default class BoatsNearMe extends LightningElement {
           this.longitude = position.coords.longitude;
         },
         () => {
-          console.log("geo error");
           this.isLoading = false;
           const event = new ShowToastEvent({
             title: ERROR_TITLE,
@@ -84,7 +83,6 @@ export default class BoatsNearMe extends LightningElement {
   createMapMarkers(boatData) {
     // const newMarkers = boatData.map(boat => {...});
     // newMarkers.unshift({...});
-    console.log(typeof boatData);
     if (boatData) {
       const newMarkers = boatData.map((boat) => {
         return {
