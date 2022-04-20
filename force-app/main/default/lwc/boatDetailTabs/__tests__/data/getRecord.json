@@ -1,0 +1,9 @@
+{
+  "apiName": "Boat__c",
+  "childRelationships": {},
+  "fields": {
+    "Name": "SS EXISTS",
+    "Id": "AABBCC"
+  },
+  "Id": "AABBCC"
+}

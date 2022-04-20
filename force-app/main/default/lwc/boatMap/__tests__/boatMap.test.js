@@ -13,7 +13,7 @@ describe("c-boat-map", () => {
     }
   });
 
-  it("It shouldn't display a map if there is no selected boat", () => {
+  it("shouldn't display a map if there is no selected boat", () => {
     const boatMap = createElement("c-boat-map", {
       is: BoatMap
     });

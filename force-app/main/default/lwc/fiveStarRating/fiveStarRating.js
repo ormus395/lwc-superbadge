@@ -8,7 +8,8 @@ import fivestar from "@salesforce/resourceUrl/fivestar";
 // add constants here
 const ERROR_TITLE = "Error loading five-star";
 const ERROR_VARIANT = "error";
-
+const EDTABLE_CLASS = "c-rating";
+const READ_ONLY_CLASS = "readonly c-rating";
 export default class FiveStarRating extends LightningElement {
   //initialize public readOnly and value properties
   @api readOnly;
@@ -19,7 +20,7 @@ export default class FiveStarRating extends LightningElement {
 
   //getter function that returns the correct class depending on if it is readonly
   get starClass() {
-    return "star";
+    return this.readOnly ? READ_ONLY_CLASS : EDTABLE_CLASS;
   }
 
   // Render callback to load the script once the component renders.
@@ -36,16 +37,14 @@ export default class FiveStarRating extends LightningElement {
   //display a toast with error message if there is an error loading script
   loadScript() {
     Promise.all([
-      loadStyle(this, fivestar + "/fivestar.css"),
-      loadScript(this, fivestar + "/fivestar.js")
+      loadStyle(this, fivestar + "/rating.css"),
+      loadScript(this, fivestar + "/rating.js")
     ])
       .then(() => {
         this.initializeRating();
       })
       .catch((err) => {
-        console.log("called");
-        console.log(err);
-        return this.dispatchEvent(
+        this.dispatchEvent(
           new ShowToastEvent({
             title: ERROR_TITLE,
             variant: ERROR_VARIANT
@@ -73,5 +72,9 @@ export default class FiveStarRating extends LightningElement {
 
   // Method to fire event called ratingchange with the following parameter:
   // {detail: { rating: CURRENT_RATING }}); when the user selects a rating
-  ratingChanged(rating) {}
+  ratingChanged(rating) {
+    this.dispatchEvent(
+      new CustomEvent("ratingchange", { detail: { rating: rating } })
+    );
+  }
 }
