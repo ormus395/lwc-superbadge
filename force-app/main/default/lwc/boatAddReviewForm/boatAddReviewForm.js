@@ -9,6 +9,9 @@ import NAME_FIELD from "@salesforce/schema/BoatReview__c.Name";
 // import COMMENT_FIELD from schema - BoatReview__c.Comment__c
 import COMMENT_FIELD from "@salesforce/schema/BoatReview__c.Comment__c";
 
+const SUCCESS_TITLE = "Review Created!";
+const SUCCESS_VARIANT = "success";
+
 export default class BoatAddReviewForm extends LightningElement {
   // Private
   boatId;
@@ -39,17 +42,42 @@ export default class BoatAddReviewForm extends LightningElement {
   // form to be submitted: lightning-record-edit-form
   handleSubmit(event) {
     event.preventDefault();
+    console.log("form submission");
+    // insert Boat__c and Record__c into the fields before creating the record
+    console.log(this.boatReviewObject);
+
+    event.preventDefault(); // stop the form from submitting
+    const fields = event.detail.fields;
+
+    fields.Boat__c = this.recordId;
+    fields.Rating__c = this.rating;
+    this.template.querySelector("lightning-record-edit-form").submit(fields);
   }
 
   // Shows a toast message once form is submitted successfully
   // Dispatches event when a review is created
   handleSuccess() {
     // TODO: dispatch the custom event and show the success message
-    this.dispatchEvent(new ShowToastEvent({}));
+    console.log("successful submit");
+
     this.handleReset();
+    this.dispatchEvent(
+      new ShowToastEvent({
+        title: SUCCESS_TITLE,
+        variant: SUCCESS_VARIANT
+      })
+    );
+    this.dispatchEvent(new CustomEvent("createreview"));
+  }
+
+  handleError() {
+    console.log("There was an error sumitting the form");
   }
 
   // Clears form data upon submission
   // TODO: it must reset each lightning-input-field
-  handleReset() {}
+  handleReset() {
+    const inputs = this.template.querySelectorAll("lightning-input-field");
+    inputs.forEach((input) => input.reset());
+  }
 }

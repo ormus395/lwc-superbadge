@@ -1,0 +1,10 @@
+{
+  "apiName": "BoatReview__c",
+  "childRelationships": {},
+  "fields": {
+    "Name": "A Review",
+    "Rating__c": 5,
+    "Comment__c": "This is a comment"
+  },
+  "Id": "AABBCC"
+}

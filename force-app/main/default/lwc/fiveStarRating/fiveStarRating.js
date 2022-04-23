@@ -8,7 +8,7 @@ import fivestar from "@salesforce/resourceUrl/fivestar";
 // add constants here
 const ERROR_TITLE = "Error loading five-star";
 const ERROR_VARIANT = "error";
-const EDTABLE_CLASS = "c-rating";
+const EDITABLE_CLASS = "c-rating";
 const READ_ONLY_CLASS = "readonly c-rating";
 export default class FiveStarRating extends LightningElement {
   //initialize public readOnly and value properties
@@ -20,7 +20,7 @@ export default class FiveStarRating extends LightningElement {
 
   //getter function that returns the correct class depending on if it is readonly
   get starClass() {
-    return this.readOnly ? READ_ONLY_CLASS : EDTABLE_CLASS;
+    return this.readOnly ? READ_ONLY_CLASS : EDITABLE_CLASS;
   }
 
   // Render callback to load the script once the component renders.

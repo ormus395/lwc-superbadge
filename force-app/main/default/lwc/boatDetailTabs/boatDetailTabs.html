@@ -38,14 +38,14 @@
           </lightning-record-view-form>
         </lightning-card>
       </lightning-tab>
-      <lightning-tab label="Reviews" value="reviews">
-        <c-boat-reviews boat-id={boatId}></c-boat-reviews>
-      </lightning-tab>
       <lightning-tab label={label.labelAddReview}>
-        <c-boat-add-review
-          record-id={boatId}
+        <c-boat-add-review-form
           oncreatereview={handleReviewCreated}
-        ></c-boat-add-review>
+          record-id={boatId}
+        ></c-boat-add-review-form>
+      </lightning-tab>
+      <lightning-tab label={label.labelReviews} value="reviews">
+        <c-boat-reviews record-id={boatId}></c-boat-reviews>
       </lightning-tab>
     </lightning-tabset>
   </template>

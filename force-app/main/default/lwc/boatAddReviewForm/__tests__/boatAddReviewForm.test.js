@@ -1,6 +1,10 @@
 import { createElement } from "lwc";
+import { createRecord } from "lightning/uiRecordApi";
+import { ShowToastEventName } from "lightning/platformShowToastEvent";
 import BoatAddReviewForm from "../boatAddReviewForm";
 // Tests from this compoennt
+
+const mockCreateRecord = require("./data/createRecord.json");
 
 describe("c-boat-add-review-form", () => {
   afterEach(() => {
@@ -10,6 +14,10 @@ describe("c-boat-add-review-form", () => {
 
     jest.clearAllMocks();
   });
+
+  async function resolvePromise() {
+    return Promise.resolve();
+  }
 
   it("has a public api recordId", () => {
     const element = createElement("c-boat-add-review-form", {
@@ -42,8 +50,39 @@ describe("c-boat-add-review-form", () => {
     expect(buttonEl.type).toBe("submit");
   });
 
-  it("fires a success toast on successful form submission", () => {
-      
+  it("fires a success toast on successful form submission", async () => {
+    const handler = jest.fn();
+    const element = createElement("c-boat-add-review-form", {
+      is: BoatAddReviewForm
+    });
+    element.recordId = "AABBCC";
+    document.body.appendChild(element);
+
+    createRecord.mockResolvedValue(mockCreateRecord);
+
+    element.addEventListener(ShowToastEventName, handler);
+
+    await resolvePromise();
+
+    const buttonEl = element.shadowRoot.querySelector("lightning-button");
+    buttonEl.click();
+
+    await resolvePromise();
+
+    expect(handler).toHaveBeenCalled();
+  });
+
+  it("creates a boat review record", async () => {
+    const element = createElement("c-boat-add-review-form", {
+      is: BoatAddReviewForm
+    });
+    element.recordId = "AABBCC";
+    document.body.appendChild(element);
+
+    await resolvePromise();
+
+    const form = element.shadowRoot.querySelector("lightning-record-edit-form");
+    form.dispatchEvent(new CustomEvent("submit"));
   });
 });
 
