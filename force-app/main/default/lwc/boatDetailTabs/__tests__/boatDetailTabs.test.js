@@ -60,4 +60,26 @@ describe("c-boat-detail-tabs", () => {
     expect(pageReference.attributes.objectApiName).toBe(NAV_OBJECT_API_NAME);
     expect(pageReference.attributes.actionName).toBe(NAV_ACTION);
   });
+
+  it("handles review creation and switches active tab", async () => {
+    const element = createElement("c-boat-details-tab", {
+      is: BoatDetailTabs
+    });
+    document.body.appendChild(element);
+
+    getRecord.emit(mockGetRecord);
+
+    await Promise.resolve();
+
+    const addReviewForm = element.shadowRoot.querySelector(
+      "c-boat-add-review-form"
+    );
+    addReviewForm.dispatchEvent(new CustomEvent("createreview"));
+
+    const activeTab = element.shadowRoot.querySelector("lightning-tabset");
+
+    return Promise.resolve().then(() => {
+      expect(activeTab.activeTabValue).toBe("reviews");
+    });
+  });
 });
