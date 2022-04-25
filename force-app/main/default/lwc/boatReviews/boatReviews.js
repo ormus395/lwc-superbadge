@@ -1,8 +1,8 @@
 import { LightningElement, api, wire } from "lwc";
+import { NavigationMixin } from "lightning/navigation";
 import getAllReviews from "@salesforce/apex/BoatDataService.getAllReviews";
-import { refreshApex } from "@salesforce/apex";
 
-export default class BoatReviews extends LightningElement {
+export default class BoatReviews extends NavigationMixin(LightningElement) {
   // Private
   boatId;
   error;
@@ -28,10 +28,9 @@ export default class BoatReviews extends LightningElement {
   }
 
   // Public method to force a refresh of the reviews invoking getReviews
-  refresh() {
-    refreshApex().then(() => {
-      this.getReviews();
-    });
+  @api refresh() {
+    console.log("called");
+    this.getReviews();
   }
 
   // Imperative Apex call to get reviews for given boat
@@ -46,6 +45,7 @@ export default class BoatReviews extends LightningElement {
     this.isLoading = true;
     getAllReviews({ boatId: this.boatId })
       .then((reviews) => {
+        console.log("getting reviews", reviews);
         if (reviews) {
           this.boatReviews = reviews;
           this.isLoading = false;

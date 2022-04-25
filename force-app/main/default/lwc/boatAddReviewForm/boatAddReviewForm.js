@@ -41,10 +41,9 @@ export default class BoatAddReviewForm extends LightningElement {
   // This function must prevent the anchor element from navigating to a URL.
   // form to be submitted: lightning-record-edit-form
   handleSubmit(event) {
+    console.log("called");
     event.preventDefault();
-    console.log("form submission");
     // insert Boat__c and Record__c into the fields before creating the record
-    console.log(this.boatReviewObject);
 
     event.preventDefault(); // stop the form from submitting
     const fields = event.detail.fields;

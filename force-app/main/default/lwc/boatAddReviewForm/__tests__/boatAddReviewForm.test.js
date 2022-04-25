@@ -31,25 +31,6 @@ describe("c-boat-add-review-form", () => {
     });
   });
 
-  it("renders lightning-record-edit form with given values", () => {
-    const RECORD_ID_INPUT = "AAVVCC";
-    const OBJECT_API_NAME_INPUT = "BoatReview__c";
-
-    const element = createElement("c-boat-add-review-form", {
-      is: BoatAddReviewForm
-    });
-    element.recordId = RECORD_ID_INPUT;
-    document.body.appendChild(element);
-
-    const formEl = element.shadowRoot.querySelector(
-      "lightning-record-edit-form"
-    );
-    expect(formEl.recordId).toBe(RECORD_ID_INPUT);
-
-    const buttonEl = element.shadowRoot.querySelector("lightning-button");
-    expect(buttonEl.type).toBe("submit");
-  });
-
   it("fires a success toast on successful form submission", async () => {
     const handler = jest.fn();
     const element = createElement("c-boat-add-review-form", {
@@ -64,15 +45,17 @@ describe("c-boat-add-review-form", () => {
 
     await resolvePromise();
 
-    const buttonEl = element.shadowRoot.querySelector("lightning-button");
-    buttonEl.click();
+    element.shadowRoot
+      .querySelector("lightning-record-edit-form")
+      .dispatchEvent(new CustomEvent("success"));
 
     await resolvePromise();
 
     expect(handler).toHaveBeenCalled();
   });
 
-  it("creates a boat review record", async () => {
+  it("handles record submit", async () => {
+    const handler = jest.fn();
     const element = createElement("c-boat-add-review-form", {
       is: BoatAddReviewForm
     });
@@ -82,7 +65,11 @@ describe("c-boat-add-review-form", () => {
     await resolvePromise();
 
     const form = element.shadowRoot.querySelector("lightning-record-edit-form");
-    form.dispatchEvent(new CustomEvent("submit"));
+    form.addEventListener("submit", handler);
+
+    await resolvePromise();
+    form.dispatchEvent(new CustomEvent("submit", { detail: { fields: [] } }));
+    expect(handler).toHaveBeenCalled();
   });
 });
 
