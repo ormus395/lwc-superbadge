@@ -55,6 +55,10 @@ describe("c-boat-add-review-form", () => {
   });
 
   it("handles record submit", async () => {
+    const fields = {
+      Name: "AA",
+      Comment__c: "A TESTED COMMENT"
+    };
     const handler = jest.fn();
     const element = createElement("c-boat-add-review-form", {
       is: BoatAddReviewForm
@@ -65,11 +69,14 @@ describe("c-boat-add-review-form", () => {
     await resolvePromise();
 
     const form = element.shadowRoot.querySelector("lightning-record-edit-form");
-    form.addEventListener("submit", handler);
+    form.submit = handler;
 
     await resolvePromise();
-    form.dispatchEvent(new CustomEvent("submit", { detail: { fields: [] } }));
+    form.dispatchEvent(
+      new CustomEvent("submit", { detail: { fields: fields } })
+    );
     expect(handler).toHaveBeenCalled();
+    expect(handler).toHaveBeenCalledWith(fields);
   });
 });
 

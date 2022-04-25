@@ -22,6 +22,7 @@ jest.mock(
   },
   { virtual: true }
 );
+const BOAT_ID = "a028b000027JEkAAAW";
 const mockGetAllReviews = [
   {
     Id: "a008b00000snD2PAAU",
@@ -104,7 +105,6 @@ describe("c-boat-reviews", () => {
     getAllReviews.mockResolvedValue(mockGetAllReviews);
 
     await resolvePromise();
-    const BOAT_ID = "a028b000027JEkAAAW";
     const element = createElement("c-boat-reviews", { is: BoatReviews });
     element.recordId = BOAT_ID;
 
@@ -135,7 +135,7 @@ describe("c-boat-reviews", () => {
       }
     };
     getAllReviews.mockResolvedValue(mockGetAllReviews);
-    const BOAT_ID = "a028b000027JEkAAAW";
+
     const element = createElement("c-boat-reviews", { is: BoatReviews });
     element.recordId = BOAT_ID;
 
@@ -155,17 +155,26 @@ describe("c-boat-reviews", () => {
   });
 
   it("navigates to a user detail page", async () => {
+    getAllReviews.mockResolvedValue(mockGetAllReviews);
     const NAV_TYPE = "standard__recordPage";
     const NAV_OBJECT_API_NAME = "User";
     const NAV_ACTION = "view";
 
     const element = createElement("c-boat-reviews", { is: BoatReviews });
+    element.recordId = BOAT_ID;
     document.body.appendChild(element);
 
-    getAllReviews.mockResolvedValue(mockGetAllReviews);
     await resolvePromise();
 
     // need to get the link from the user
     // click  the link and check to see if a navigation would have happend
+    const anchor = element.shadowRoot.querySelector("a");
+    anchor.click();
+
+    const { pageReference } = getNavigateCalledWith();
+
+    expect(pageReference.type).toBe(NAV_TYPE);
+    expect(pageReference.attributes.objectApiName).toBe(NAV_OBJECT_API_NAME);
+    expect(pageReference.attributes.actionName).toBe(NAV_ACTION);
   });
 });

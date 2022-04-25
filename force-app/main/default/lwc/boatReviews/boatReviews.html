@@ -9,6 +9,7 @@
       <!-- insert spinner -->
       <template if:true={isLoading}>
         <lightning-spinner
+          size="small"
           variant="brand"
           alternative-text="Loading"
         ></lightning-spinner
@@ -21,6 +22,10 @@
               <header class="slds-post__header slds-media">
                 <div class="slds-media__figure">
                   <!-- display the creator’s picture -->
+                  <lightning-avatar
+                    variant="circle"
+                    src={boatReview.CreatedBy.SmallPhotoUrl}
+                  ></lightning-avatar>
                 </div>
                 <div class="slds-media__body">
                   <div
@@ -28,22 +33,37 @@
                   >
                     <p>
                       <!-- display creator’s name -->
-                      <span><!-- display creator’s company name --></span>
+                      <a
+                        title={boatReview.CreatedBy.Name}
+                        data-record-id={boatReview.CreatedBy.Id}
+                        onclick={navigateToRecord}
+                        >{boatReview.CreatedBy.Name}</a
+                      >
+                      <span>{boatReview.CreatedBy.CompanyName}</span>
                     </p>
                   </div>
                   <p class="slds-text-body_small">
                     <!-- display created  date -->
+                    <lightning-formatted-date-time
+                      >{boatReview.CreatedDate}</lightning-formatted-date-time
+                    >
                   </p>
                 </div>
               </header>
               <div class="slds-text-longform">
-                <p class="slds-text-title_caps"><!-- display Name --></p>
+                <p class="slds-text-title_caps">{boatReview.Name}</p>
                 <!-- display Comment__c -->
+                <lightning-formatted-rich-text
+                  >{boatReview.Comment__c}</lightning-formatted-rich-text
+                >
               </div>
               <!-- display five star rating on readonly mode -->
-            </article>
-          </li></template
-        >
+              <c-five-star-rating
+                read-only="true"
+                value={boatReview.Rating__c}
+              ></c-five-star-rating>
+            </article></li
+        ></template>
 
         <!-- end iteration -->
       </ul>

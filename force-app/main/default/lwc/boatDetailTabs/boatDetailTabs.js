@@ -54,7 +54,6 @@ export default class BoatDetailTabs extends NavigationMixin(LightningElement) {
 
   // Utilize getFieldValue to extract the boat name from the record wire
   get boatName() {
-    console.log(this.wiredRecord);
     return getFieldValue(this.wiredRecord.data, BOAT_NAME_FIELD);
   }
 
@@ -101,7 +100,6 @@ export default class BoatDetailTabs extends NavigationMixin(LightningElement) {
 
   // Navigates back to the review list, and refreshes reviews component
   handleReviewCreated() {
-    console.log("review created");
     this.template.querySelector("lightning-tabset").activeTabValue = "reviews";
     this.template.querySelector("c-boat-reviews").refresh();
   }

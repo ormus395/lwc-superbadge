@@ -93,17 +93,4 @@ describe("c-five-star-rating", () => {
 
     expect(ul).not.toBeNull();
   });
-
-  //   it("fires a ratingchange event when rating changes", async () => {
-  //     const handler = jest.fn();
-  //     const element = createElement("c-five-star-rating", { is: FiveStarRating });
-  //     document.body.appendChild(element);
-
-  //     element.addEventListener("ratingchange", handler);
-  //     await resolvePromises();
-
-  //     const stars = element.shadowRoot.querySelector("ul");
-  //     console.log(stars.children);
-  //     expect(handler).toHaveBeenCalled();
-  //   });
 });

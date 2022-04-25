@@ -1,0 +1,10 @@
+[
+  {
+    "Name": "SS EXISTS",
+    "Contact__r": { "Name": "Some Guy" },
+    "Price__r": 8000,
+    "Length__c": 17,
+    "BoatType__r": { "Name": "Sailboat" },
+    "Id": "a028b000027JEk9AAG"
+  }
+]

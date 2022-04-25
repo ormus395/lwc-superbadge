@@ -41,7 +41,6 @@ export default class BoatAddReviewForm extends LightningElement {
   // This function must prevent the anchor element from navigating to a URL.
   // form to be submitted: lightning-record-edit-form
   handleSubmit(event) {
-    console.log("called");
     event.preventDefault();
     // insert Boat__c and Record__c into the fields before creating the record
 
@@ -57,7 +56,6 @@ export default class BoatAddReviewForm extends LightningElement {
   // Dispatches event when a review is created
   handleSuccess() {
     // TODO: dispatch the custom event and show the success message
-    console.log("successful submit");
 
     this.handleReset();
     this.dispatchEvent(
