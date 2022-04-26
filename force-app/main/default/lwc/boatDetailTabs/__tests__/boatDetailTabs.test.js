@@ -1,5 +1,5 @@
 import { createElement } from "lwc";
-import { getRecord, getFieldValue } from "lightning/uiRecordApi";
+import { getRecord } from "lightning/uiRecordApi";
 import { getNavigateCalledWith } from "lightning/navigation";
 import { subscribe, MessageContext, publish } from "lightning/messageService";
 import BoatDetailTabs from "../boatDetailTabs";
